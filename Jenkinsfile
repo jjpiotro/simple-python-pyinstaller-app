@@ -37,7 +37,7 @@ pipeline{
             }
             steps{
                 echo "====++++executing Deliver++++===="
-                sh 'pyinstaller --onefile sources/add2vals'
+                sh 'pyinstaller --onefile sources/add2vals.py'
             }
             post{
                 success{
