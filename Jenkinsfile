@@ -47,6 +47,30 @@ pipeline{
         
             }
         }
+        stage("Deliver"){
+            agent{
+                docker{
+                    image 'cdrx/pyinstaller-linux:python2'
+                }
+            }
+            steps{
+                echo "====++++executing Deliver++++===="
+                sh 'pyinstaller --onefile sources/add2vals'
+            }
+            post{
+                always{
+                    echo "====++++always++++===="
+                }
+                success{
+                    echo "====++++Deliver executed succesfully++++===="
+                    archiveArtifacts 'dist/add2vals'
+                }
+                failure{
+                    echo "====++++Deliver execution failed++++===="
+                }
+        
+            }
+        }
     }
     post{
         always{
