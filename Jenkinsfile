@@ -9,18 +9,7 @@ pipeline{
             }
             steps{
                 echo "====++++executing Build++++===="
-            }
-            post{
-                always{
-                    echo "====++++always++++===="
-                }
-                success{
-                    echo "====++++Build executed succesfully++++===="
-                }
-                failure{
-                    echo "====++++Build execution failed++++===="
-                }
-        
+                sh 'python -m py_compile sources/add2vals.py sources/calc.py'
             }
         }
         stage("Test"){
@@ -38,13 +27,6 @@ pipeline{
                     echo "====++++always++++===="
                     junit 'test-reports/results.xml'
                 }
-                success{
-                    echo "====++++Test executed succesfully++++===="
-                }
-                failure{
-                    echo "====++++Test execution failed++++===="
-                }
-        
             }
         }
         stage("Deliver"){
@@ -58,17 +40,10 @@ pipeline{
                 sh 'pyinstaller --onefile sources/add2vals'
             }
             post{
-                always{
-                    echo "====++++always++++===="
-                }
                 success{
                     echo "====++++Deliver executed succesfully++++===="
                     archiveArtifacts 'dist/add2vals'
                 }
-                failure{
-                    echo "====++++Deliver execution failed++++===="
-                }
-        
             }
         }
     }
