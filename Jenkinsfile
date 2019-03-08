@@ -23,6 +23,30 @@ pipeline{
         
             }
         }
+        stage("Test"){
+            agent{
+                docker{
+                    image 'qnib/pytest'
+                }
+            }
+            steps{
+                echo "====++++executing Test++++===="
+                sh 'py.test --verbose --junit-xml test-reports/results.xml sources/test_calc.py'
+            }
+            post{
+                always{
+                    echo "====++++always++++===="
+                    junit 'test-reports/results.xml'
+                }
+                success{
+                    echo "====++++Test executed succesfully++++===="
+                }
+                failure{
+                    echo "====++++Test execution failed++++===="
+                }
+        
+            }
+        }
     }
     post{
         always{
